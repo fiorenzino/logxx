@@ -1,0 +1,39 @@
+Configuration:
+  status: warn
+
+  Properties:
+    Property:
+      name: logPath
+      value: logs
+
+  Appenders:
+    Console:
+      name: Console
+      target: SYSTEM_OUT
+      ThresholdFilter:
+        level: info
+      PatternLayout:
+        Pattern: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %c{1} - %msg%n'
+    RollingFile:
+      name: File
+      fileName: ${logPath}/app.log
+      filePattern: ${logPath}/app-%d{yy-MM-dd}-%i.log.gz
+      PatternLayout:
+        Pattern: '%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5level] %c{1} - %msg%n'
+      Policies:
+        SizeBasedTriggeringPolicy:
+          size: 1 KB
+        DefaultRollOverStrategy:
+          max: 30
+        TimeBasedTriggeringPolicy:
+          interval: 1
+          modulate: true
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: Console
+        - ref: File
+    Logger:
+      name: nz.flower
+      level: all
